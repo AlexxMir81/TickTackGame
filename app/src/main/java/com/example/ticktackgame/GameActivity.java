@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity {
     private int step = 1;
+    String[][] grid;
     GridLayout gridLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,48 +41,65 @@ public class GameActivity extends AppCompatActivity {
                        }
                    }
                     step++;
-                    if(CheckWinner()){
-                        if (step % 2 == 0){
-                            Toast.makeText(GameActivity.this, "Победитель: O", Toast.LENGTH_LONG).show();
-                        }else {
-                            Toast.makeText(GameActivity.this, "Победитель: X", Toast.LENGTH_LONG).show();
-                        }
-                        ClearGrid();
-                    };
+                    if(!getResult()){
+                       if(str.equals(getString(R.string.mode2))) {
+                           computerStep();
+                       }
+                    }
                 }
             });
         }
-        
         gridLayout.setBackgroundColor(Color.BLACK);
     }
 
-    public void ClearGrid(){
-        for (int i = 0; i < gridLayout.getChildCount(); i++){
+
+    public void computerStep() {
+        for (int i = 0; i < gridLayout.getRowCount(); i++) {
+            for (int j = 0; j < gridLayout.getColumnCount(); j++) {
+                if (grid[i][j].equals("")) {
+                    if (step % 2 == 0) {
+                        View childView = gridLayout.getChildAt(j * gridLayout.getColumnCount() + i);
+                        Button button = (Button) childView;
+                        button.setText("X");
+                        getResult();
+                        step++;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    public void ClearGrid () {
+        for (int i = 0; i < gridLayout.getChildCount(); i++) {
             View childView = gridLayout.getChildAt(i);
             Button button = (Button) childView;
             button.setText("");
         }
 
     }
-    public boolean CheckWinner(){
-        int rowCount = gridLayout.getRowCount();
-        int colCount = gridLayout.getColumnCount();
-        String[][] grid = new String[rowCount][colCount];
-        for (int i = 0; i < rowCount; i++){
-            for (int j = 0; j < colCount; j++){
+    public String[][] fillingGrid ( int row, int col){
+        String[][] grid = new String[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 View childView = gridLayout.getChildAt(j * gridLayout.getColumnCount() + i);
                 Button button = (Button) childView;
                 grid[i][j] = button.getText().toString();
             }
         }
+        return grid;
+    }
+    public boolean CheckWinner () {
+        int rowCount = gridLayout.getRowCount();
+        int colCount = gridLayout.getColumnCount();
+        grid = fillingGrid(rowCount, colCount);
 
-        for (int i = 0; i < rowCount; i++){
-            if(!grid[i][0].equals("") && grid[i][0].equals(grid[i][1]) && grid[i][0].equals(grid[i][2])){
+        for (int i = 0; i < rowCount; i++) {
+            if (!grid[i][0].equals("") && grid[i][0].equals(grid[i][1]) && grid[i][0].equals(grid[i][2])) {
                 return true;
             }
         }
-        for (int i = 0; i < colCount; i++){
-            if(!grid[0][i].equals("") && grid[0][i].equals(grid[1][i]) && grid[0][i].equals(grid[2][i])){
+        for (int i = 0; i < colCount; i++) {
+            if (!grid[0][i].equals("") && grid[0][i].equals(grid[1][i]) && grid[0][i].equals(grid[2][i])) {
                 return true;
             }
         }
@@ -94,6 +112,19 @@ public class GameActivity extends AppCompatActivity {
             if (!grid[0][2].equals("") && grid[0][2].equals(grid[1][1]) && grid[0][2].equals(grid[2][0])) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean getResult() {
+        if (CheckWinner()) {
+            if (step % 2 == 0) {
+                Toast.makeText(GameActivity.this, "Победитель: O", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(GameActivity.this, "Победитель: X", Toast.LENGTH_LONG).show();
+            }
+            ClearGrid();
+            return  true;
         }
         return false;
     }
