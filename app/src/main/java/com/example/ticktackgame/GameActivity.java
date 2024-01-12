@@ -6,6 +6,7 @@ import androidx.core.view.KeyEventDispatcher;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 public class GameActivity extends AppCompatActivity {
     private int step = 1;
     private int size = 3;
+    TextView resultMessage;
     String[][] grid;
     GridLayout gridLayout;
     @Override
@@ -24,7 +26,7 @@ public class GameActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.Mode_text);
         String str = getIntent().getStringExtra("mode");
         textView.setText(str);
-
+        resultMessage = findViewById(R.id.Winner_text);
         Button backButton = findViewById(R.id.Back_btn);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +39,7 @@ public class GameActivity extends AppCompatActivity {
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resultMessage.setText("");
                 ClearGrid();
             }
         });
@@ -97,95 +100,79 @@ public class GameActivity extends AppCompatActivity {
                 if (i == 0) {
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i+1][j]) && grid[i + 2][j].equals("")) {
                         makeStep(i + 2, j);
-                        // Toast.makeText(GameActivity.this, "WWWWWWWWW", Toast.LENGTH_LONG).show();
                         return;
                     }
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i+2][j]) && grid[i + 1][j].equals("")) {
                         makeStep(i + 1, j);
-                       // Toast.makeText(GameActivity.this, "WWWWWWWWW", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
                 if (i == size - 1) {
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i-1][j]) && grid[i - 1][j].equals("")) {
                         makeStep(i - 1, j);
-                       // Toast.makeText(GameActivity.this, "878787878787", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
                 if (i < size - 1 && i > 0) {
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i+1][j]) && grid[i - 1][j].equals("")) {
                         makeStep(i - 1, j);
-                      //  Toast.makeText(GameActivity.this, "VVVVVVVVVV", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
                 if (j == 0) {
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i][j + 1]) && grid[i][j + 2].equals("")) {
                         makeStep(i, j + 2);
-                      //  Toast.makeText(GameActivity.this, "RRRRRRRRRRRRR", Toast.LENGTH_LONG).show();
                         return;
                     }
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i][j + 2]) && grid[i][j + 1].equals("")) {
                         makeStep(i, j + 1);
-                     //   Toast.makeText(GameActivity.this, "RRRRRRRRRRRRR", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
                 if (j == size - 1) {
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i][j - 1]) && grid[i][j - 2].equals("")) {
                         makeStep(i,j - 2);
-                     //   Toast.makeText(GameActivity.this, "54545454545454", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
                 if (j < size - 1 && j > 0) {
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i][j + 1]) && grid[i][j - 1].equals("")) {
                         makeStep(i, j - 1);
-                     //   Toast.makeText(GameActivity.this, "BBBBBBBBBB", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
-                //////////////////
                 if (i == 0 && i==j) {
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i+1][j+1]) && grid[i + 2][j+2].equals("")) {
                         makeStep(i + 2, j+2);
-                     //   Toast.makeText(GameActivity.this, "10101010101", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
                 if (i == size - 1 && i==j) {
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i-1][j-1]) && grid[i - 2][j-2].equals("")) {
                         makeStep(i - 1, j-1);
-                     //   Toast.makeText(GameActivity.this, "9999999999999", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
                 if (i == 0 && j==size-1) {
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i+1][j-1]) && grid[i + 2][j-2].equals("")) {
                         makeStep(i + 2, j - 2);
-                     //   Toast.makeText(GameActivity.this, "7777777777", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
                 if (i == size - 1 && j==0) {
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i-1][j+1]) && grid[i - 2][j + 1].equals("")) {
                         makeStep(i - 2, j + 1);
-                     //   Toast.makeText(GameActivity.this, "4444444444444", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
                 if (i < size - 1 && i > 0 && i==j) {
                     if (!grid[i][j].equals("") && grid[i][j].equals(grid[i+1][j+1]) && grid[i - 1][j-1].equals("")) {
                         makeStep(i - 1, j-1);
-                     //   Toast.makeText(GameActivity.this, "1111111111111", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
-                //////////////////
                 if (i>0 && i<size-1 && j>0 && j<size-1 && grid[i][j].equals("")){
                     makeStep(i, j);
-                  //  Toast.makeText(GameActivity.this, "ZZZZZZZZ", Toast.LENGTH_LONG).show();
                     return;
                 }
             }
@@ -195,13 +182,11 @@ public class GameActivity extends AppCompatActivity {
                 for (int j = 0; j < size; j++) {
                     if (grid[i][j].equals("")){
                         makeStep(i, j);
-                     //   Toast.makeText(GameActivity.this, "KKKKKKKKK", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
             }
         }
-        Toast.makeText(GameActivity.this, "НИЧЕГО", Toast.LENGTH_LONG).show();
     }
     public void makeStep(int row, int col){
         if (step % 2 == 0) {
@@ -210,7 +195,6 @@ public class GameActivity extends AppCompatActivity {
             button.setText("X");
             step++;
             getResult();
-
         }
     }
     public void ClearGrid () {
@@ -218,6 +202,7 @@ public class GameActivity extends AppCompatActivity {
             View childView = gridLayout.getChildAt(i);
             Button button = (Button) childView;
             button.setText("");
+            step = 1;
         }
     }
     public String[][] fillingGrid ( int row, int col){
@@ -253,15 +238,39 @@ public class GameActivity extends AppCompatActivity {
     public boolean getResult() {
         if (CheckWinner()) {
             if (step % 2 == 0) {
-                Toast.makeText(GameActivity.this, "Победитель: O", Toast.LENGTH_LONG).show();
+                resultMessage.setText("Победитель: O");
+                message("Победитель: O",Gravity.CENTER);
             } else {
-                Toast.makeText(GameActivity.this, "Победитель: X", Toast.LENGTH_LONG).show();
+                resultMessage.setText("Победитель: X");
+                message("Победитель: X",Gravity.CENTER);
             }
-            ClearGrid();
+            //ClearGrid();
             step = 1;
             return  true;
+        } else if (!canStep()){
+            resultMessage.setText("Ничья");
+            message("Ничья",Gravity.CENTER);
+            return true;
         }
         return false;
+    }
+
+    public void message(String text, int gravity){
+        Toast toast = Toast.makeText(GameActivity.this, text, Toast.LENGTH_LONG);
+        toast.setGravity(gravity, 0,0);
+        toast.show();
+    }
+    public boolean canStep(){
+        boolean result = false;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if(grid[i][j].equals("")){
+                    result = true;
+                    return result;
+                }
+            }
+        }
+        return result;
     }
     public void BackMainActivity(View view) {
         Intent intent = new Intent();
